@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Express Delivery - ParcelGoGo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="./assets/Colored No BG.png">
+  <style>
+    /* BASE STYLES */
+    :root {
+      --primary-color: #cc5000;
+      --secondary-color: #2c2c2c;
+      --dark-color: #1e1e1e;
+      --light-color: #fff;
+      --text-color: #222;
+      --text-light: #aaa;
+      --gray-color: #ccc;
+      --section-padding: 80px 20px;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body { 
+      margin: 0; 
+      font-family: 'Segoe UI', Arial, sans-serif; 
+      background: #fff; 
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    section {
+      padding: var(--section-padding);
+    }
+    
+    h1, h2, h3, h4 {
+      line-height: 1.2;
+      margin-bottom: 15px;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+    
+    .btn-primary {
+      background: var(--primary-color);
+      color: var(--light-color);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(226, 27, 27, 0.3);
+    }
+    
+    .section-title {
+      font-size: 36px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--text-light);
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+    
+    .section-label {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: var(--light-color);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .logo img { 
+      height: 40px; 
+    }
+    
+    nav ul { 
+      list-style: none; 
+      display: flex; 
+      gap: 25px; 
+      align-items: center; 
+    }
+    
+    nav a { 
+      text-decoration: none; 
+      color: var(--text-color); 
+      font-weight: 500;
+    }
+    
+    .menu-toggle {
+      display: none;
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    /* HERO */
+    .hero-express {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1603138461420-e24168721842?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+      color: var(--light-color);
+      text-align: center;
+      padding: 180px 20px 100px;
+      margin-top: 70px;
+    }
+    
+    .hero-express h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    
+    .hero-express .timer {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      display: inline-flex;
+      padding: 15px 30px;
+      border-radius: 50px;
+      margin: 20px 0;
+    }
+    
+    .timer-item {
+      padding: 0 15px;
+      position: relative;
+    }
+    
+    .timer-item:not(:last-child)::after {
+      content: ":";
+      position: absolute;
+      right: -5px;
+      top: 0;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    
+    .timer-number {
+      font-size: 36px;
+      font-weight: 700;
+    }
+    
+    .timer-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* SERVICE HIGHLIGHTS */
+    .highlights-section {
+      background: #f9f9f9;
+    }
+    
+    .highlight-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .highlight-card {
+      background: white;
+      border-radius: 12px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .highlight-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .highlight-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 20px;
+    }
+    
+    /* COVERAGE MAP */
+    .coverage-section {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .map-container {
+      height: 500px;
+      background: #eee;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .map-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      color: white;
+      padding: 30px;
+    }
+    
+    .cities-list {
+      columns: 3;
+      column-gap: 30px;
+    }
+    
+    .cities-list li {
+      margin-bottom: 8px;
+    }
+    
+    /* PRICING */
+    .pricing-section {
+      background: #f9f9f9;
+    }
+    
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .pricing-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .pricing-header {
+      background: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .pricing-body {
+      padding: 30px;
+    }
+    
+    .price {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .price span {
+      font-size: 16px;
+      font-weight: normal;
+    }
+    
+    .pricing-features {
+      margin: 30px 0;
+    }
+    
+    .pricing-features li {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .pricing-features i {
+      color: var(--primary-color);
+    }
+    
+    /* HOW IT WORKS */
+    .steps-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 50px;
+      position: relative;
+    }
+    
+    .steps-container::before {
+      content: "";
+      position: absolute;
+      top: 40px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--primary-color);
+      z-index: 1;
+    }
+    
+    .step-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 250px;
+    }
+    
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0 auto 20px;
+      border: 5px solid white;
+    }
+    
+    /* CTA SECTION */
+    .cta-section {
+      background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1603138461420-e24168721842?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+      color: var(--light-color);
+      text-align: center;
+    }
+    
+    .cta-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 50px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    /* FOOTER */
+    .footer {
+      background-color: var(--dark-color);
+      color: var(--light-color);
+      padding: 80px 0 0;
+    }
+    
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .footer-logo img {
+      height: 40px;
+      margin-bottom: 20px;
+    }
+    
+    .social-icons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .social-icons a {
+      color: var(--light-color);
+      background-color: #333;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+    
+    .footer h3 {
+      color: var(--light-color);
+      font-size: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 2px;
+      background-color: var(--primary-color);
+    }
+    
+    .footer ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer ul li {
+      margin-bottom: 12px;
+    }
+    
+    .footer ul li a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer ul li a:hover {
+      color: var(--primary-color);
+    }
+    
+    .footer-bottom {
+      background-color: #111;
+      padding: 20px 0;
+      text-align: center;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--light-color);
+        padding: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        z-index: 999;
+      }
+      
+      nav ul.show {
+        display: flex;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .hero-express {
+        padding: 150px 20px 80px;
+        margin-top: 60px;
+      }
+      
+      .hero-express h1 {
+        font-size: 36px;
+      }
+      
+      .section-title {
+        font-size: 28px;
+      }
+      
+      .steps-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .steps-container::before {
+        display: none;
+      }
+      
+      .cities-list {
+        columns: 2;
+      }
+      
+      .cta-card {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="./assets/Colored No BG.png" alt="ParcelGoGo Logo">
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="shipping.html">Shipping</a></li>
+      <li><a href="express.html" class="active">Express Delivery</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="auth-buttons">
+    <button class="btn btn-outline">Sign In</button>
+    <button class="btn btn-primary">Sign Up</button>
+  </div>
+  
+  <button class="menu-toggle">
+    <i class="fas fa-bars"></i>
+  </button>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero-express">
+  <div class="container">
+    <h1>Express Delivery</h1>
+    <p>Get your packages delivered in record time with our premium service</p>
+    
+    <div class="timer">
+      <div class="timer-item">
+        <div class="timer-number">24</div>
+        <div class="timer-label">Hours</div>
+      </div>
+      <div class="timer-item">
+        <div class="timer-number">60</div>
+        <div class="timer-label">Minutes</div>
+      </div>
+      <div class="timer-item">
+        <div class="timer-number">99.9%</div>
+        <div class="timer-label">On Time</div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 30px;">
+      <a href="#pricing" class="btn btn-primary" style="margin-right: 15px;">Get Instant Quote</a>
+      <a href="#how-it-works" class="btn btn-outline">How It Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE HIGHLIGHTS -->
+<section class="highlights-section">
+  <div class="container">
+    <span class="section-label">Why Choose Us</span>
+    <h2 class="section-title">Premium Express Features</h2>
+    <p class="section-subtitle">Our fastest service with exclusive benefits</p>
+    
+    <div class="highlight-cards">
+      <div class="highlight-card">
+        <div class="highlight-icon">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <h3>Lightning Fast</h3>
+        <p>Guaranteed delivery within 24-48 hours for domestic shipments and 2-3 days internationally.</p>
+      </div>
+      
+      <div class="highlight-card">
+        <div class="highlight-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h3>Priority Handling</h3>
+        <p>Your packages receive top priority at every stage of the delivery process.</p>
+      </div>
+      
+      <div class="highlight-card">
+        <div class="highlight-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <h3>Real-Time Tracking</h3>
+        <p>Advanced tracking with live updates and estimated delivery times.</p>
+      </div>
+      
+      <div class="highlight-card">
+        <div class="highlight-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h3>Secure Delivery</h3>
+        <p>Tamper-evident packaging and signature confirmation included.</p>
+      </div>
+      
+      <div class="highlight-card">
+        <div class="highlight-icon">
+          <i class="fas fa-headset"></i>
+        </div>
+        <h3>24/7 Support</h3>
+        <p>Dedicated customer service team available around the clock.</p>
+      </div>
+      
+      <div class="highlight-card">
+        <div class="highlight-icon">
+          <i class="fas fa-box-open"></i>
+        </div>
+        <h3>Free Packaging</h3>
+        <p>Premium packaging materials included at no extra cost.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE MAP -->
+<section class="coverage-section">
+  <div class="container">
+    <span class="section-label">Our Network</span>
+    <h2 class="section-title">Nationwide Coverage</h2>
+    <p class="section-subtitle">Express delivery to hundreds of cities across the country</p>
+    
+    <div class="map-container">
+      <!-- Map would be implemented with Google Maps or similar in production -->
+      <img src="https://images.unsplash.com/photo-1622023459101-9f4e53a5ba4c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Coverage Map" style="width:100%;height:100%;object-fit:cover">
+      
+      <div class="map-overlay">
+        <h3 style="color:white;margin-bottom:20px;">Serving Major Cities Including:</h3>
+        <ul class="cities-list" style="color:white;">
+          <li>New York</li>
+          <li>Los Angeles</li>
+          <li>Chicago</li>
+          <li>Houston</li>
+          <li>Phoenix</li>
+          <li>Philadelphia</li>
+          <li>San Antonio</li>
+          <li>San Diego</li>
+          <li>Dallas</li>
+          <li>San Jose</li>
+          <li>Austin</li>
+          <li>Jacksonville</li>
+          <li>Fort Worth</li>
+          <li>Columbus</li>
+          <li>San Francisco</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <span class="section-label">Pricing</span>
+    <h2 class="section-title">Express Delivery Rates</h2>
+    <p class="section-subtitle">Simple, transparent pricing for urgent shipments</p>
+    
+    <div class="pricing-cards">
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>Domestic</h3>
+          <p>Within the same country</p>
+        </div>
+        <div class="pricing-body">
+          <div class="price">$12.99<span>/package</span></div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> 24-48 hour delivery</li>
+            <li><i class="fas fa-check"></i> Up to 5 lbs included</li>
+            <li><i class="fas fa-check"></i> Real-time tracking</li>
+            <li><i class="fas fa-check"></i> $100 insurance</li>
+            <li><i class="fas fa-check"></i> Free packaging</li>
+          </ul>
+          <button class="btn btn-primary" style="width: 100%;">Ship Now</button>
+        </div>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>International</h3>
+          <p>Cross-border delivery</p>
+        </div>
+        <div class="pricing-body">
+          <div class="price">$29.99<span>/package</span></div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> 2-3 day delivery</li>
+            <li><i class="fas fa-check"></i> Up to 5 lbs included</li>
+            <li><i class="fas fa-check"></i> Customs clearance</li>
+            <li><i class="fas fa-check"></i> $200 insurance</li>
+            <li><i class="fas fa-check"></i> Duty calculator</li>
+          </ul>
+          <button class="btn btn-primary" style="width: 100%;">Ship Now</button>
+        </div>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>Business</h3>
+          <p>For frequent shippers</p>
+        </div>
+        <div class="pricing-body">
+          <div class="price">Custom<span>/volume</span></div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check"></i> Volume discounts</li>
+            <li><i class="fas fa-check"></i> Dedicated account manager</li>
+            <li><i class="fas fa-check"></i> API integration</li>
+            <li><i class="fas fa-check"></i> Bulk shipping tools</li>
+            <li><i class="fas fa-check"></i> Custom reporting</li>
+          </ul>
+          <button class="btn btn-outline" style="width: 100%;">Contact Sales</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="container" id="how-it-works">
+  <span class="section-label">Process</span>
+  <h2 class="section-title">How Express Delivery Works</h2>
+  <p class="section-subtitle">Get your urgent packages delivered in 3 simple steps</p>
+  
+  <div class="steps-container">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <h3>Schedule Pickup</h3>
+      <p>Book online or via our app for same-day pickup at your location.</p>
+    </div>
+    
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <h3>Priority Processing</h3>
+      <p>Your package receives expedited handling at all facilities.</p>
+    </div>
+    
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h3>Fast Delivery</h3>
+      <p>We deliver your package within the guaranteed timeframe.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <h2 class="section-title">Need Urgent Delivery?</h2>
+      <p class="section-subtitle">Get your package moving now with our fastest service</p>
+      <div style="margin-top: 30px;">
+        <a href="#" class="btn btn-primary" style="margin-right: 15px;">Create Shipment</a>
+        <a href="contact.html" class="btn btn-outline">Contact Support</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="./assets/Colored No BG.png" alt="ParcelGoGo Logo">
+        <p>Fastest delivery solutions for urgent shipments worldwide.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h3>Express Services</h3>
+        <ul>
+          <li><a href="#">Domestic Express</a></li>
+          <li><a href="#">International Express</a></li>
+          <li><a href="#">Same-Day Delivery</a></li>
+          <li><a href="#">Overnight Shipping</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Support</h3>
+        <ul>
+          <li><a href="#">Track Shipment</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Service Guide</a></li>
+          <li><a href="#">Claims</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Contact Us</h3>
+        <ul>
+          <li><i class="fas fa-map-marker-alt"></i> Murtala Muhammad international airport , shop 24, opposite legend hotel</li>
+          <li><i class="fas fa-phone"></i> +44 7823 689880</li>
+          <li><i class="fas fa-envelope"></i> express@parcelgogo.com</li>
+          <li><i class="fas fa-clock"></i> 24/7 Customer Support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; 2026 ParcelGoGo Express Delivery. All Rights Reserved.</p>
+      <div class="legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Shipping Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navMenu = document.querySelector('nav ul');
+  
+  menuToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    navMenu.classList.toggle('show');
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('nav') && !e.target.closest('.menu-toggle')) {
+      navMenu.classList.remove('show');
+    }
+  });
+  
+  // Countdown timer animation
+  function animateTimer() {
+    const numbers = document.querySelectorAll('.timer-number');
+    numbers.forEach(num => {
+      const target = parseInt(num.textContent);
+      let current = 0;
+      const increment = target / 30;
+      
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          clearInterval(timer);
+          num.textContent = target;
+        } else {
+          num.textContent = Math.floor(current);
+        }
+      }, 30);
+    });
+  }
+  
+  // Start animation when page loads
+  window.addEventListener('load', animateTimer);
+  
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop - 80,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
