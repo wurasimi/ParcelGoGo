@@ -957,6 +957,7 @@ nav a:hover {
   }
 }
 /* ===== HERO CLEANUP FOR SMALL SCREENS ===== */
+/* ===== HERO CLEANUP FOR SMALL SCREENS ===== */
 @media (max-width: 768px) {
   .hero {
     padding-top: 100px;
