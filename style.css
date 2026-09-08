@@ -958,71 +958,38 @@ nav a:hover {
 }
 /* ===== HERO CLEANUP FOR SMALL SCREENS ===== */
 /* ===== HERO CLEANUP FOR SMALL SCREENS ===== */
+/* ===== MOVE TRUCK ABOVE HEADING + FIX HEADER ROW ON MOBILE ===== */
 @media (max-width: 768px) {
   .hero {
-    padding-top: 100px;
-  }
-
-  .hero-content {
-    margin-top: 0;
-    padding-right: 0;
-    text-align: center;
-    width: 100%;
-  }
-
-  .hero-content p {
-    margin-top: 0;
-  }
-
-  .hero h1 {
-    margin-top: 0;
-    font-size: 32px;
-    text-align: center;
-  }
-
-  .arrowImage {
-    display: none;   /* floating review badge image - too cramped on mobile */
-  }
-
-  .tracking-form {
-    margin: 0 auto 20px;
-    width: 100%;
-  }
-
-  .trusted {
-    justify-content: center;
-    flex-wrap: wrap;
-    text-align: center;
-    gap: 10px;
+    padding-top: 20px;      /* was 100px — truck now fills that space instead */
   }
 
   .hero-image {
-    margin-top: 20px;
-    width: 100%;
+    order: -1;               /* pulls it above .hero-content in the column stack */
+    margin-top: 0;
+    margin-bottom: 10px;
   }
 
   .hero-image img {
-    margin-top: 0;
-    margin-left: 0;
-    max-width: 220px;   /* shrink the truck down */
-    animation: float 3s ease-in-out infinite;
+    max-width: 160px;
+    margin: 0 auto;
   }
 
-  .services {
-    margin-top: 0;   /* was -30vh, dragging the black section up under the hero */
+  .hero-content {
+    order: 2;
+  }
+
+  header {
+    flex-wrap: nowrap;       /* stop the hamburger from dropping to its own line */
+  }
+
+  nav {
+    width: auto;             /* overrides the earlier width:100% that caused the wrap */
   }
 }
 
 @media (max-width: 480px) {
-  .hero h1 {
-    font-size: 26px;
-  }
-
-  .hero-content p {
-    font-size: 14px;
-  }
-
   .hero-image img {
-    max-width: 180px;   /* even smaller on very small phones */
+    max-width: 130px;
   }
 }
