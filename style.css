@@ -993,3 +993,25 @@ nav a:hover {
     max-width: 130px;
   }
 }
+/* ===== TRUCK TO TOP + MENU LEFT (append only, doesn't touch block above) ===== */
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 20px;   /* was 100px — that space is now filled by the truck itself */
+  }
+
+  .hero-image {
+    order: -1;            /* moves truck above .hero-content in the column stack */
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+
+  .hero-content {
+    order: 2;
+  }
+
+  header {
+    flex-direction: row-reverse;   /* puts the hamburger on the left, logo on the right */
+    justify-content: flex-end;
+    gap: 15px;
+  }
+}
