@@ -993,3 +993,22 @@ nav a:hover {
     font-size: 22px;
   }
 }
+.map-section {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 0; /* removes the small gap under the iframe */
+}
+
+.map-section iframe {
+  display: block;
+  width: 100%;
+  height: 300px;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .map-section iframe {
+    height: 250px;
+  }
+}
